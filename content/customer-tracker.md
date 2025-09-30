@@ -1,13 +1,21 @@
 ---
-title: EDS Customer Follow-up Tracker
-description: Track customer information, updates, and contract status with Google Sheets integration
+title: Customer Tracker
+description: Track customer information, updates, and contract status
 template: default
 ---
 
-# EDS Customer Follow-up Tracker
+# Customer Tracker
 
 Track customer information, updates, and contract status with Google Sheets integration.
 
-## Customer Tracker
+## Features
+
+- Add new customers
+- Update existing customers  
+- Search customers with autocomplete
+- View customer details
+- Google Sheets integration
+
+## Customer Tracker Component
 
 ::: customer-tracker

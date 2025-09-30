@@ -1,6 +1,6 @@
 ---
 title: EDS Customer Follow-up Tracker
-description: Track customer information, updates, and contract status
+description: Track customer information, updates, and contract status with Google Sheets integration
 template: default
 ---
 
