@@ -12,6 +12,117 @@ function highlightText(text, query) {
   return text.replace(regex, '<span class="suggestion-highlight">$1</span>');
 }
 
+function showMessage(message, type) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = type;
+  messageDiv.textContent = message;
+
+  const content = document.querySelector('.content');
+  content.insertBefore(messageDiv, content.firstChild);
+
+  setTimeout(() => {
+    messageDiv.remove();
+  }, 5000);
+}
+
+function searchCustomer() {
+  const customerName = document.getElementById('searchName').value.trim();
+
+  if (!customerName) {
+    showMessage('Please enter a customer name', 'error');
+    return;
+  }
+
+  fetch(`/api/customers/${encodeURIComponent(customerName)}`)
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 404) {
+          document.getElementById('searchResults').innerHTML =
+            '<div class="error">Customer not found</div>';
+          return;
+        }
+        throw new Error('Failed to fetch customer');
+      }
+      return response.json();
+    })
+    .then((customer) => {
+      displayCustomerResult(customer);
+    })
+    .catch((error) => {
+      document.getElementById('searchResults').innerHTML =
+        `<div class="error">Error searching customer: ${error.message}</div>`;
+    });
+}
+
+function displayCustomerResult(customer) {
+  const updates = customer.updates ? customer.updates.split('\n').filter((u) => u.trim()) : [];
+  const sortedUpdates = updates.sort((a, b) => {
+    const dateA = new Date(a.split(':')[0]);
+    const dateB = new Date(b.split(':')[0]);
+    return dateB - dateA;
+  });
+
+  let customerHTML = `<div class="customer-card">
+    <div class="customer-info">
+      <div class="info-item">
+        <div class="info-label">Customer Name</div>
+        <div class="info-value">${customer.customerName}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">IMS Org</div>
+        <div class="info-value">${customer.imsorg || 'Not specified'}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">AEM Type</div>
+        <div class="info-value">
+          <span class="status-badge aem-type">${customer.aemType}</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Contract Signed</div>
+        <div class="info-value">
+          <span class="status-badge ${customer.contractSigned ? 'status-true' : 'status-false'}">
+            ${customer.contractSigned ? 'Yes' : 'No'}
+          </span>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Auto-optimization</div>
+        <div class="info-value">
+          <span class="status-badge ${customer.autoOptimizationEnabled ? 'status-true' : 'status-false'}">
+            ${customer.autoOptimizationEnabled ? 'Enabled' : 'Disabled'}
+          </span>
+        </div>
+      </div>
+    </div>`;
+
+  if (customer.issues) {
+    customerHTML += `
+      <div class="info-item">
+        <div class="info-label">Issues</div>
+        <div class="info-value">${customer.issues}</div>
+      </div>`;
+  }
+
+  customerHTML += `
+    <div class="updates-section">
+      <div class="updates-title">Updates (Newest First)</div>
+      <div class="updates-content">${sortedUpdates.join('\n') || 'No updates yet'}</div>
+    </div>
+  </div>`;
+
+  document.getElementById('searchResults').innerHTML = customerHTML;
+}
+
+function populateUpdateForm(customer) {
+  document.getElementById('updateCustomerName').value = customer.customerName;
+  document.getElementById('updateImsorg').value = customer.imsorg || '';
+  document.getElementById('updateAemType').value = customer.aemType || '';
+  document.getElementById('updateIssues').value = customer.issues || '';
+  document.getElementById('updateContractSigned').checked = customer.contractSigned;
+  document.getElementById('updateAutoOptimizationEnabled').checked = customer.autoOptimizationEnabled;
+}
+
 function selectSuggestion(suggestionElement, input, container) {
   const customerName = suggestionElement.getAttribute('data-name');
   input.value = customerName;
@@ -107,19 +218,6 @@ function initializeAutocomplete() {
   }
 }
 
-function showMessage(message, type) {
-  const messageDiv = document.createElement('div');
-  messageDiv.className = type;
-  messageDiv.textContent = message;
-
-  const content = document.querySelector('.content');
-  content.insertBefore(messageDiv, content.firstChild);
-
-  setTimeout(() => {
-    messageDiv.remove();
-  }, 5000);
-}
-
 function handleAddCustomer(e) {
   e.preventDefault();
 
@@ -194,104 +292,6 @@ function handleUpdateCustomer(e) {
     .catch((error) => {
       showMessage(`Error updating customer: ${error.message}`, 'error');
     });
-}
-
-function populateUpdateForm(customer) {
-  document.getElementById('updateCustomerName').value = customer.customerName;
-  document.getElementById('updateImsorg').value = customer.imsorg || '';
-  document.getElementById('updateAemType').value = customer.aemType || '';
-  document.getElementById('updateIssues').value = customer.issues || '';
-  document.getElementById('updateContractSigned').checked = customer.contractSigned;
-  document.getElementById('updateAutoOptimizationEnabled').checked = customer.autoOptimizationEnabled;
-}
-
-function searchCustomer() {
-  const customerName = document.getElementById('searchName').value.trim();
-
-  if (!customerName) {
-    showMessage('Please enter a customer name', 'error');
-    return;
-  }
-
-  fetch(`/api/customers/${encodeURIComponent(customerName)}`)
-    .then((response) => {
-      if (!response.ok) {
-        if (response.status === 404) {
-          document.getElementById('searchResults').innerHTML =
-            '<div class="error">Customer not found</div>';
-          return;
-        }
-        throw new Error('Failed to fetch customer');
-      }
-      return response.json();
-    })
-    .then((customer) => {
-      displayCustomerResult(customer);
-    })
-    .catch((error) => {
-      document.getElementById('searchResults').innerHTML =
-        `<div class="error">Error searching customer: ${error.message}</div>`;
-    });
-}
-
-function displayCustomerResult(customer) {
-  const updates = customer.updates ? customer.updates.split('\n').filter((u) => u.trim()) : [];
-  const sortedUpdates = updates.sort((a, b) => {
-    const dateA = new Date(a.split(':')[0]);
-    const dateB = new Date(b.split(':')[0]);
-    return dateB - dateA;
-  });
-
-  let customerHTML = `<div class="customer-card">
-    <div class="customer-info">
-      <div class="info-item">
-        <div class="info-label">Customer Name</div>
-        <div class="info-value">${customer.customerName}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">IMS Org</div>
-        <div class="info-value">${customer.imsorg || 'Not specified'}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">AEM Type</div>
-        <div class="info-value">
-          <span class="status-badge aem-type">${customer.aemType}</span>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Contract Signed</div>
-        <div class="info-value">
-          <span class="status-badge ${customer.contractSigned ? 'status-true' : 'status-false'}">
-            ${customer.contractSigned ? 'Yes' : 'No'}
-          </span>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Auto-optimization</div>
-        <div class="info-value">
-          <span class="status-badge ${customer.autoOptimizationEnabled ? 'status-true' : 'status-false'}">
-            ${customer.autoOptimizationEnabled ? 'Enabled' : 'Disabled'}
-          </span>
-        </div>
-      </div>
-    </div>`;
-
-  if (customer.issues) {
-    customerHTML += `
-      <div class="info-item">
-        <div class="info-label">Issues</div>
-        <div class="info-value">${customer.issues}</div>
-      </div>`;
-  }
-
-  customerHTML += `
-    <div class="updates-section">
-      <div class="updates-title">Updates (Newest First)</div>
-      <div class="updates-content">${sortedUpdates.join('\n') || 'No updates yet'}</div>
-    </div>
-  </div>`;
-
-  document.getElementById('searchResults').innerHTML = customerHTML;
 }
 
 function initializeForms() {
