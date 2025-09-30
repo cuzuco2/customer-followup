@@ -25,35 +25,6 @@ function showMessage(message, type) {
   }, 5000);
 }
 
-function searchCustomer() {
-  const customerName = document.getElementById('searchName').value.trim();
-
-  if (!customerName) {
-    showMessage('Please enter a customer name', 'error');
-    return;
-  }
-
-  fetch(`/api/customers/${encodeURIComponent(customerName)}`)
-    .then((response) => {
-      if (!response.ok) {
-        if (response.status === 404) {
-          document.getElementById('searchResults').innerHTML =
-            '<div class="error">Customer not found</div>';
-          return;
-        }
-        throw new Error('Failed to fetch customer');
-      }
-      return response.json();
-    })
-    .then((customer) => {
-      displayCustomerResult(customer);
-    })
-    .catch((error) => {
-      document.getElementById('searchResults').innerHTML =
-        `<div class="error">Error searching customer: ${error.message}</div>`;
-    });
-}
-
 function displayCustomerResult(customer) {
   const updates = customer.updates ? customer.updates.split('\n').filter((u) => u.trim()) : [];
   const sortedUpdates = updates.sort((a, b) => {
@@ -114,13 +85,31 @@ function displayCustomerResult(customer) {
   document.getElementById('searchResults').innerHTML = customerHTML;
 }
 
-function populateUpdateForm(customer) {
-  document.getElementById('updateCustomerName').value = customer.customerName;
-  document.getElementById('updateImsorg').value = customer.imsorg || '';
-  document.getElementById('updateAemType').value = customer.aemType || '';
-  document.getElementById('updateIssues').value = customer.issues || '';
-  document.getElementById('updateContractSigned').checked = customer.contractSigned;
-  document.getElementById('updateAutoOptimizationEnabled').checked = customer.autoOptimizationEnabled;
+function searchCustomer() {
+  const customerName = document.getElementById('searchName').value.trim();
+
+  if (!customerName) {
+    showMessage('Please enter a customer name', 'error');
+    return;
+  }
+
+  fetch(`/api/customers/${encodeURIComponent(customerName)}`)
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 404) {
+          document.getElementById('searchResults').innerHTML = '<div class="error">Customer not found</div>';
+          return;
+        }
+        throw new Error('Failed to fetch customer');
+      }
+      return response.json();
+    })
+    .then((customer) => {
+      displayCustomerResult(customer);
+    })
+    .catch((error) => {
+      document.getElementById('searchResults').innerHTML = `<div class="error">Error searching customer: ${error.message}</div>`;
+    });
 }
 
 function selectSuggestion(suggestionElement, input, container) {
