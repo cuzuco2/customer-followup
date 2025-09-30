@@ -317,4 +317,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initializeForms();
 });
-
