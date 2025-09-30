@@ -1,0 +1,5 @@
+# FSTab configuration for AEM Edge Delivery Services
+# This file defines mount points for content sources
+
+mountpoints:
+  /: https://main--customer-followup--cuzuco2.aem.page
