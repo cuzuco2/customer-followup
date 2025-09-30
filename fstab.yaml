@@ -1,3 +1,5 @@
-mounts:
-  - source: https://docs.google.com/spreadsheets/d/17K9oqQ_uI8o1tcYcH8Xt4-JesBIAYIAvdfhBQVOqZkY/edit#gid=0
-    target: /content
+# FSTab configuration for AEM Edge Delivery Services
+# This file defines mount points for content sources
+
+# For now, we'll use a minimal configuration
+# Google Sheets integration will be handled through the customer-tracker block
