@@ -341,7 +341,7 @@ body {
     border-radius: 2px;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .nav-list {
         flex-direction: column;
     }
