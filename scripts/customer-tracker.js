@@ -98,7 +98,7 @@ function searchCustomer() {
       if (!response.ok) {
         if (response.status === 404) {
           document.getElementById('searchResults').innerHTML = '<div class="error">Customer not found</div>';
-          return;
+          return null;
         }
         throw new Error('Failed to fetch customer');
       }
@@ -317,3 +317,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initializeForms();
 });
+
