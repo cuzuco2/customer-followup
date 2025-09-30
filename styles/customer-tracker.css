@@ -1,4 +1,5 @@
 /* AEM Block CSS for Customer Tracker */
+
 /* This contains all the styles from your layout.html */
 
 * {
@@ -18,7 +19,7 @@ body {
     margin: 0 auto;
     background: white;
     min-height: 100vh;
-    box-shadow: 0 0 40px rgba(0,0,0,0.1);
+    box-shadow: 0 0 40px rgb(0 0 0 / 10%);
 }
 
 .header {
@@ -141,6 +142,10 @@ body {
     transition: border-color 0.3s ease;
 }
 
+.search-input input {
+    flex: 1;
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -211,13 +216,13 @@ body {
     border-radius: 12px;
     padding: 25px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgb(0 0 0 / 5%);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .customer-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 15px rgb(0 0 0 / 10%);
 }
 
 .customer-info {
@@ -276,9 +281,6 @@ body {
     align-items: end;
 }
 
-.search-input input {
-    flex: 1;
-}
 
 .hidden {
     display: none;
@@ -300,7 +302,7 @@ body {
     border: 1px solid #e9ecef;
     border-top: none;
     border-radius: 0 0 8px 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
