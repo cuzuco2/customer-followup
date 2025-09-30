@@ -15,3 +15,11 @@ definitions:
     livePreview: https://main--customer-followup--cuzuco2.aem.live
     liveStatus: https://main--customer-followup--cuzuco2.aem.live
     liveAdmin: https://main--customer-followup--cuzuco2.aem.live
+  production:
+    url: https://customer-followup--cuzuco2.aem.live
+    content: https://customer-followup--cuzuco2.aem.live
+    static: https://customer-followup--cuzuco2.aem.live
+    media: https://customer-followup--cuzuco2.aem.live
+    preview: https://customer-followup--cuzuco2.aem.live
+    status: https://customer-followup--cuzuco2.aem.live
+    admin: https://customer-followup--cuzuco2.aem.live
