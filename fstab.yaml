@@ -3,3 +3,4 @@
 
 mountpoints:
   /: https://main--customer-followup--cuzuco2.aem.page
+  /content: https://main--customer-followup--cuzuco2.aem.page/content
