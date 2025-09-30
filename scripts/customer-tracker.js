@@ -196,34 +196,6 @@ function handleUpdateCustomer(e) {
     });
 }
 
-function searchCustomerForUpdate() {
-  const customerName = document.getElementById('updateSearchName').value.trim();
-
-  if (!customerName) {
-    showMessage('Please enter a customer name', 'error');
-    return;
-  }
-
-  fetch(`/api/customers/${encodeURIComponent(customerName)}`)
-    .then((response) => {
-      if (!response.ok) {
-        if (response.status === 404) {
-          showMessage('Customer not found', 'error');
-          return;
-        }
-        throw new Error('Failed to fetch customer');
-      }
-      return response.json();
-    })
-    .then((customer) => {
-      populateUpdateForm(customer);
-      document.getElementById('updateCustomerForm').classList.remove('hidden');
-    })
-    .catch((error) => {
-      showMessage(`Error searching customer: ${error.message}`, 'error');
-    });
-}
-
 function populateUpdateForm(customer) {
   document.getElementById('updateCustomerName').value = customer.customerName;
   document.getElementById('updateImsorg').value = customer.imsorg || '';
