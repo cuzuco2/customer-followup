@@ -1,0 +1,17 @@
+version: 1
+definitions:
+  default:
+    url: https://main--customer-followup--cuzuco2.aem.page
+    content: https://main--customer-followup--cuzuco2.aem.page
+    static: https://main--customer-followup--cuzuco2.aem.page
+    media: https://main--customer-followup--cuzuco2.aem.page
+    preview: https://main--customer-followup--cuzuco2.aem.page
+    status: https://main--customer-followup--cuzuco2.aem.page
+    admin: https://main--customer-followup--cuzuco2.aem.page
+    live: https://main--customer-followup--cuzuco2.aem.live
+    liveContent: https://main--customer-followup--cuzuco2.aem.live
+    liveStatic: https://main--customer-followup--cuzuco2.aem.live
+    liveMedia: https://main--customer-followup--cuzuco2.aem.live
+    livePreview: https://main--customer-followup--cuzuco2.aem.live
+    liveStatus: https://main--customer-followup--cuzuco2.aem.live
+    liveAdmin: https://main--customer-followup--cuzuco2.aem.live
