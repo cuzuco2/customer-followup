@@ -1,0 +1,29 @@
+{
+  "name": "Customer Tracker",
+  "description": "EDS Customer Follow-up Tracking System with Google Sheets Integration",
+  "version": "1.0.0",
+  "author": "EDS Team",
+  "license": "MIT",
+  "dependencies": {
+    "googleapis": "^126.0.1"
+  },
+  "scripts": {
+    "build": "echo 'Building customer tracker block'",
+    "test": "echo 'Testing customer tracker block'"
+  },
+  "keywords": [
+    "aem",
+    "edge-delivery",
+    "customer-tracking",
+    "google-sheets",
+    "forms"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cuzuco2/eds-customer-followup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cuzuco2/eds-customer-followup/issues"
+  },
+  "homepage": "https://github.com/cuzuco2/eds-customer-followup#readme"
+}

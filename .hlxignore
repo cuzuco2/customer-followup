@@ -1,7 +1,41 @@
-.*
-*.md
-karma.config.js
-LICENSE
-package.json
+# AEM Edge Delivery Services ignore file
+# Files and directories to exclude from deployment
+
+# Node.js files
+node_modules/
 package-lock.json
-test/*
+.env
+.env.local
+.env.production
+
+# Development files
+*.log
+.DS_Store
+Thumbs.db
+
+# Git files
+.git/
+.gitignore
+
+# Documentation files
+*.md
+!README.md
+
+# Deployment files
+DEPLOYMENT.md
+GITHUB_DEPLOYMENT.md
+GITHUB_PROFILE_SETUP.md
+EDS_AEM_INTEGRATION.md
+EDS_DEPLOYMENT.md
+AEM_MIGRATION_GUIDE.md
+
+# Setup files
+setup-deployment.sh
+setup-sheet.js
+credentials.json
+env.example
+env.production
+
+# Server files
+server.js
+public/
