@@ -170,3 +170,4 @@ The application expects the following column structure:
 ## License
 
 MIT
+# Trigger EDS build Tue Sep 30 15:44:15 CEST 2025
