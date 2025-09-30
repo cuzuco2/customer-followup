@@ -7,28 +7,14 @@ function hideSuggestions(container) {
   container.innerHTML = '';
 }
 
-function fetchSuggestions(query, container) {
-  return fetch('/api/customers/search/suggestions?q=' + encodeURIComponent(query))
-    .then(function (response) {
-      if (!response.ok) throw new Error('Failed to fetch suggestions');
-      return response.json();
-    })
-    .then(function (suggestions) {
-      displaySuggestions(suggestions, container, query);
-    })
-    .catch(function (error) {
-      hideSuggestions(container);
-    });
-}
-
 function displaySuggestions(suggestions, container, query) {
   if (suggestions.length === 0) {
     hideSuggestions(container);
     return;
   }
 
-  var suggestionsHTML = suggestions.map(function (suggestion) {
-    var highlightedName = highlightText(suggestion.name, query);
+  const suggestionsHTML = suggestions.map(function (suggestion) {
+    const highlightedName = highlightText(suggestion.name, query);
     return '<div class="suggestion-item" data-name="' + suggestion.name + '">' +
       '<div class="suggestion-name">' + highlightedName + '</div>' +
       '<div class="suggestion-details">' +
@@ -48,12 +34,12 @@ function displaySuggestions(suggestions, container, query) {
 }
 
 function highlightText(text, query) {
-  var regex = new RegExp('(' + query + ')', 'gi');
+  const regex = new RegExp('(' + query + ')', 'gi');
   return text.replace(regex, '<span class="suggestion-highlight">$1</span>');
 }
 
 function selectSuggestion(suggestionElement, input, container) {
-  var customerName = suggestionElement.getAttribute('data-name');
+  const customerName = suggestionElement.getAttribute('data-name');
   input.value = customerName;
   hideSuggestions(container);
 
@@ -62,12 +48,26 @@ function selectSuggestion(suggestionElement, input, container) {
   }
 }
 
+function fetchSuggestions(query, container) {
+  return fetch('/api/customers/search/suggestions?q=' + encodeURIComponent(query))
+    .then(function (response) {
+      if (!response.ok) throw new Error('Failed to fetch suggestions');
+      return response.json();
+    })
+    .then(function (suggestions) {
+      displaySuggestions(suggestions, container, query);
+    })
+    .catch(function () {
+      hideSuggestions(container);
+    });
+}
+
 function setupAutocomplete(input, suggestionsContainer) {
-  var debounceTimer;
+  let debounceTimer;
 
   input.addEventListener('input', function () {
     clearTimeout(debounceTimer);
-    var query = input.value.trim();
+    const query = input.value.trim();
 
     if (query.length < 1) {
       hideSuggestions(suggestionsContainer);
@@ -93,25 +93,25 @@ function setupAutocomplete(input, suggestionsContainer) {
 }
 
 function initializeAutocomplete() {
-  var updateSearchInput = document.getElementById('updateSearchName');
-  var updateSuggestions = document.getElementById('updateSearchSuggestions');
+  const updateSearchInput = document.getElementById('updateSearchName');
+  const updateSuggestions = document.getElementById('updateSearchSuggestions');
   if (updateSearchInput && updateSuggestions) {
     setupAutocomplete(updateSearchInput, updateSuggestions);
   }
 
-  var searchInput = document.getElementById('searchName');
-  var searchSuggestions = document.getElementById('searchSuggestions');
+  const searchInput = document.getElementById('searchName');
+  const searchSuggestions = document.getElementById('searchSuggestions');
   if (searchInput && searchSuggestions) {
     setupAutocomplete(searchInput, searchSuggestions);
   }
 }
 
 function showMessage(message, type) {
-  var messageDiv = document.createElement('div');
+  const messageDiv = document.createElement('div');
   messageDiv.className = type;
   messageDiv.textContent = message;
 
-  var content = document.querySelector('.content');
+  const content = document.querySelector('.content');
   content.insertBefore(messageDiv, content.firstChild);
 
   setTimeout(function () {
@@ -122,8 +122,8 @@ function showMessage(message, type) {
 function handleAddCustomer(e) {
   e.preventDefault();
 
-  var formData = new FormData(e.target);
-  var customerData = {
+  const formData = new FormData(e.target);
+  const customerData = {
     customerName: formData.get('customerName'),
     imsorg: formData.get('imsorg'),
     aemType: formData.get('aemType'),
@@ -159,9 +159,9 @@ function handleAddCustomer(e) {
 function handleUpdateCustomer(e) {
   e.preventDefault();
 
-  var formData = new FormData(e.target);
-  var customerName = formData.get('customerName');
-  var updateData = {
+  const formData = new FormData(e.target);
+  const customerName = formData.get('customerName');
+  const updateData = {
     imsorg: formData.get('imsorg'),
     aemType: formData.get('aemType'),
     contractSigned: formData.get('contractSigned') === 'on',
@@ -196,7 +196,7 @@ function handleUpdateCustomer(e) {
 }
 
 function searchCustomerForUpdate() {
-  var customerName = document.getElementById('updateSearchName').value.trim();
+  const customerName = document.getElementById('updateSearchName').value.trim();
 
   if (!customerName) {
     showMessage('Please enter a customer name', 'error');
@@ -233,7 +233,7 @@ function populateUpdateForm(customer) {
 }
 
 function searchCustomer() {
-  var customerName = document.getElementById('searchName').value.trim();
+  const customerName = document.getElementById('searchName').value.trim();
 
   if (!customerName) {
     showMessage('Please enter a customer name', 'error');
@@ -262,16 +262,16 @@ function searchCustomer() {
 }
 
 function displayCustomerResult(customer) {
-  var updates = customer.updates ? customer.updates.split('\n').filter(function (u) {
+  const updates = customer.updates ? customer.updates.split('\n').filter(function (u) {
     return u.trim();
   }) : [];
-  var sortedUpdates = updates.sort(function (a, b) {
-    var dateA = new Date(a.split(':')[0]);
-    var dateB = new Date(b.split(':')[0]);
+  const sortedUpdates = updates.sort(function (a, b) {
+    const dateA = new Date(a.split(':')[0]);
+    const dateB = new Date(b.split(':')[0]);
     return dateB - dateA;
   });
 
-  var customerHTML = '<div class="customer-card">' +
+  let customerHTML = '<div class="customer-card">' +
     '<div class="customer-info">' +
     '<div class="info-item">' +
     '<div class="info-label">Customer Name</div>' +
@@ -322,12 +322,12 @@ function displayCustomerResult(customer) {
 }
 
 function initializeForms() {
-  var customerForm = document.getElementById('customerForm');
+  const customerForm = document.getElementById('customerForm');
   if (customerForm) {
     customerForm.addEventListener('submit', handleAddCustomer);
   }
 
-  var updateForm = document.getElementById('updateForm');
+  const updateForm = document.getElementById('updateForm');
   if (updateForm) {
     updateForm.addEventListener('submit', handleUpdateCustomer);
   }
@@ -337,8 +337,8 @@ function initializeForms() {
 
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function () {
-  var navLinks = document.querySelectorAll('.nav-link');
-  var pages = document.querySelectorAll('.page');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const pages = document.querySelectorAll('.page');
 
   navLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       link.classList.add('active');
-      var targetPage = link.getAttribute('data-page');
+      const targetPage = link.getAttribute('data-page');
       document.getElementById(targetPage).classList.add('active');
     });
   });
